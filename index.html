@@ -30,51 +30,48 @@
             </div>
         </form>
         <div class="weather-status text-white text-center">
-            <img src="https://openweathermap.org/img/wn/02d@2x.png" alt="">
-            <h1 id="city-name">Dhaka</h1>
-            <h3><span id="temp">38.06</span>&deg;C</h3>
-            <h1 id="weather-description" class="lead">Clouds</h1>
+            <img src="https://openweathermap.org/img/wn/02d@2x.png" alt="background-image">
+            <!-- <h1 id="city-name">Dhaka</h1> -->
+            <h1><span id="city-name">Dhaka</span>, <span id="country">BD</span></h1>
+            <h3>Temperature : <span id="temp">24</span>&deg;C</h3>
+            <p>Feels Like : <span id="feels-like">22</span>&deg;C</p>
+            <h5>Weather Status : <span id="weather-description">Clouds</span></h5>
+            <h5>Wind Speed : <span id="wind-speed">2</span> km/h</h5>
         </div>
     </div>
 
     <script>
 
         document.getElementById('input-btn').addEventListener('click', function () {
-
-            // userInfo();
-
-            // http://api.openweathermap.org/data/2.5/forecast?q=' + area + '&units=metric&appid=b220ef300d42f76b9b7c6ec3db021642
             const area = document.getElementById('input-value').value;
             console.log('area', area);
 
-            // Current Weather Data
-            // fetch('https://api.openweathermap.org/data/2.5/weather?q=' + area + '&units=metric&appid=b220ef300d42f76b9b7c6ec3db021642')
-
             // 5 Day / 3 Hour Forecast
-            fetch('https://api.openweathermap.org/data/2.5/forecast?q=' + area + '&units=metric&appid=b220ef300d42f76b9b7c6ec3db021642')
+            // fetch('https://api.openweathermap.org/data/2.5/forecast?q=' + area + '&units=metric&appid=b220ef300d42f76b9b7c6ec3db021642')
+
+            // Current Weather Data
+            fetch('https://api.openweathermap.org/data/2.5/weather?q=' + area + '&units=metric&appid=b220ef300d42f76b9b7c6ec3db021642')
                 .then(response => response.json())
                 .then(data => {
                     console.log(data);
-                    console.log(data['city']['name']);
-                    console.log(data.city.name);
-                    // console.log(data['list']['0']['dt_txt']);
-                    // console.log(data['list']['0']['main']['temp']);
-                    // console.log(data['list']['0']['main']['temp_max']);
-                    // console.log(data['list']['0']['main']['temp_min']);
-                    // console.log(data['list']['0']['main']['feels_like']);
-                    console.log(data['list']['0']['weather']['0']['description']);
-                    // console.log(data['list']['0']['weather']['0']['icon']);
-                    // console.log(data['list']['0']['wind']['speed']);
-                    // console.log(data.list[0].wind.speed);
-                    // console.log(data['list']['0']['main']['temp']);
-                    const list0Main = data.list[0].main;
-                    const list0weather = data.list[0].weather[0];
-                    const cityName = data.city.name;
-                    const temperature = list0Main.temp;
-                    const weatherDescription = list0weather.description;
+                    console.log(data['name']);
+                    console.log(data.name);
+                    console.log(data.main.temp);
+                    console.log(data.weather[0].icon);
+
+                    console.log(data['weather']['0']['description']);
+                    const cityName = data.name;
+                    const country = data.sys.country;
+                    const temperature = Math.round(data.main.temp);
+                    const feelsLike = Math.round(data.main.feels_like);
+                    const weatherDescription = data.weather[0].description;
+                    const windSpeed = data.wind.speed;
                     document.getElementById('city-name').innerText = cityName;
+                    document.getElementById('country').innerText = country;
                     document.getElementById('temp').innerText = temperature;
+                    document.getElementById('feels-like').innerText = feelsLike;
                     document.getElementById('weather-description').innerText = weatherDescription;
+                    document.getElementById('wind-speed').innerText = windSpeed;
 
                     document.getElementById('input-value').value = "";      // To clear input field.
 
