@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Temperature Hot</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="shortcut icon" href="images/fav-icon.png" type="image/x-icon">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body {
+            background: url(images/bg-image.jpg) no-repeat;
+            background-size: cover;
+            height: 100vh;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <form class="col-md-6 m-auto py-5">
+            <div class="input-group mb-3">
+                <input id="input-value" type="text" class="form-control" placeholder="Enter a location for Weather ...">
+                <div class="input-group-append">
+                    <button id="input-btn" type="button" class="btn btn-danger">Search</button>
+                </div>
+            </div>
+        </form>
+        <div class="weather-status text-white text-center">
+            <img src="https://openweathermap.org/img/wn/02d@2x.png" alt="">
+            <h1 id="city-name">Dhaka</h1>
+            <h3><span id="temp">38.06</span>&deg;C</h3>
+            <h1 id="weather-description" class="lead">Clouds</h1>
+        </div>
+    </div>
+
+    <script>
+
+        document.getElementById('input-btn').addEventListener('click', function () {
+
+            // userInfo();
+
+            // http://api.openweathermap.org/data/2.5/forecast?q=' + area + '&units=metric&appid=b220ef300d42f76b9b7c6ec3db021642
+            const area = document.getElementById('input-value').value;
+            console.log('area', area);
+
+            // Current Weather Data
+            // fetch('https://api.openweathermap.org/data/2.5/weather?q=' + area + '&units=metric&appid=b220ef300d42f76b9b7c6ec3db021642')
+
+            // 5 Day / 3 Hour Forecast
+            fetch('https://api.openweathermap.org/data/2.5/forecast?q=' + area + '&units=metric&appid=b220ef300d42f76b9b7c6ec3db021642')
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    console.log(data['city']['name']);
+                    console.log(data.city.name);
+                    // console.log(data['list']['0']['dt_txt']);
+                    // console.log(data['list']['0']['main']['temp']);
+                    // console.log(data['list']['0']['main']['temp_max']);
+                    // console.log(data['list']['0']['main']['temp_min']);
+                    // console.log(data['list']['0']['main']['feels_like']);
+                    console.log(data['list']['0']['weather']['0']['description']);
+                    // console.log(data['list']['0']['weather']['0']['icon']);
+                    // console.log(data['list']['0']['wind']['speed']);
+                    // console.log(data.list[0].wind.speed);
+                    // console.log(data['list']['0']['main']['temp']);
+                    const list0Main = data.list[0].main;
+                    const list0weather = data.list[0].weather[0];
+                    const cityName = data.city.name;
+                    const temperature = list0Main.temp;
+                    const weatherDescription = list0weather.description;
+                    document.getElementById('city-name').innerText = cityName;
+                    document.getElementById('temp').innerText = temperature;
+                    document.getElementById('weather-description').innerText = weatherDescription;
+
+                    document.getElementById('input-value').value = "";      // To clear input field.
+
+                })
+
+        })
+
+    </script>
+
+</body>
+
+</html>
